@@ -1,33 +1,39 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import Layout from "../components/layout/Layout";
+import { getDatabase, ref, set } from "firebase/database";
+import { app } from "./firebase";
 import "./App.css";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Home from "../pages/home/Home";
+import About from "../pages/about/About";
+import Contact from "../pages/contact/Contact";
+import Employee from "../components/sidebar/Employee";
+import Draft from "../components/sidebar/Draft";
 
+const db = getDatabase(app);
 function App() {
-  const [count, setCount] = useState(0);
-
+  const putData = () => {
+    set(ref(db, "user/bilal"), {
+      id: 1,
+      name: "bilal",
+      age: 29,
+    });
+  };
   return (
     <>
+      {/* <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="employee-record" element={<Employee />} />
+            <Route path="drafts" element={<Draft />} />
+          </Route>
+        </Routes>
+      </Router> */}
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <button onClick={putData}>Put Data</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }
